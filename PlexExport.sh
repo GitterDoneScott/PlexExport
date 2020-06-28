@@ -1,8 +1,8 @@
 #!/bin/sh
 
 #
-# Copies media files listed in a Plex Playlist to Android and
-# creates an m3u playlist and copies that to the phone also.
+# Copies media files listed in a Plex Playlist to local directory and
+# creates an m3u playlist and copies that to the directory also.
 #
 # Copyright (c) September 27 2018 Terry Carmen, MIT Licence
 #
@@ -10,25 +10,13 @@
 #
 # No plexpass or login required.
 #
-# Dependencies: adb, sqlite, grep, cut & "USB debugging" enabled on phone
-#
-# Note: After copying, reboot your phone.
-# Mine only rescans the music at boot for some reason.#
-#
+# Dependencies: sqlite, grep, cut 
 
 
 ##################################################################
-# UPDATE THIS TO POINT TO WHEREVER YOUR MUSIC LIVES ON YOUR PHONE
-# UPDATE THIS TO POINT TO WHEREVER YOUR MUSIC LIVES ON YOUR PHONE
-# UPDATE THIS TO POINT TO WHEREVER YOUR MUSIC LIVES ON YOUR PHONE
-# UPDATE THIS TO POINT TO WHEREVER YOUR MUSIC LIVES ON YOUR PHONE
 
-android_music_dir="/sdcard/music/"
+music_dir="./"
 
-# UPDATE THIS TO POINT TO WHEREVER YOUR MUSIC LIVES ON YOUR PHONE
-# UPDATE THIS TO POINT TO WHEREVER YOUR MUSIC LIVES ON YOUR PHONE
-# UPDATE THIS TO POINT TO WHEREVER YOUR MUSIC LIVES ON YOUR PHONE
-# UPDATE THIS TO POINT TO WHEREVER YOUR MUSIC LIVES ON YOUR PHONE
 ##################################################################
 
 
@@ -83,7 +71,7 @@ else
 	WHERE metadata_items.title = \"$1\";"
 	sqlite3  "$database" "$SQL" | while read -r line; do
 	   echo "Copying $line"
-	   adb push "$line" "$android_music_dir"
+	   cp "$line" "$music_dir"
 	done
 
 	#####################################################
@@ -109,6 +97,6 @@ else
 	     echo "" >> "$1.m3u"
 	done
 
-	adb push "$1.m3u" "$android_music_dir"
+	cp "$1.m3u" "$music_dir"
 
 fi
